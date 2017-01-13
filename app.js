@@ -67,14 +67,19 @@ app.get('/trello-voice', function(request, response) {
   });
 });
 
-// trello route that passes received sms to trello
-app.get('/trello-sms', function(request, response) {
-  // retrieve sms
-  // trello.addCard(request.MessageSid, "58752899c1e32993869efd42")
-
-  client.sms.messages(request.MessageSid).get(function(err, sms) {
-    console.log(sms.body);
-  });
+// route that will post to trello list
+app.post('/trello-sms', function(request, response) {
+  // add card to trello
+  trello.addCard('Clean car', 'Wax on, wax off', "58752899c1e32993869efd42",
+    function (error, trelloCard) {
+        if (error) {
+            console.log('Could not add card:', error);
+        }
+        else {
+            console.log('Added card:', trelloCard);
+        }
+    });
+    response.send(trelloCard);
 });
 
 
