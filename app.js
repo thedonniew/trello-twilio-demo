@@ -71,30 +71,16 @@ app.get('/trello-voice', function(request, response) {
 // route that will post to trello list
 app.post('/trello-sms', function(request, response) {
   // add card to trello
-  var creationSuccess = function(data) {
-    console.log('Card created successfully. Data returned:' + JSON.stringify(data));
-  };
-
-  var newCard = {
-    name: 'New Test Card',
-    desc: 'This is the description of our new card.',
-  // Place this card at the top of our list
-    idList: myList,
-    pos: 'top'
-  };
-
-  response.send(Trello.post('/cards/', newCard, creationSuccess));
-
-  // trello.addCard('Clean car', 'Wax on, wax off', myList,
-  //   function (error, trelloCard) {
-  //       if (error) {
-  //           console.log('Could not add card:', error);
-  //       }
-  //       else {
-  //           console.log('Added card:', trelloCard);
-  //           response.send(trelloCard);
-  //       }
-  //   });
+  trello.addCard('Working?', 'Wax on, wax off', myList,
+    function (error, trelloCard) {
+        if (error) {
+            console.log('Could not add card:', error);
+        }
+        else {
+            console.log('Added card:', trelloCard);
+            response.send(trelloCard);
+        }
+    });
 });
 
 
