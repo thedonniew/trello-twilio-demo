@@ -23,6 +23,9 @@ var TWILIO_ACCOUNT_SID = process.env.TWILIO_ACCOUNT_SID,
 var TRELLO_KEY = process.env.TRELLO_KEY,
     TRELLO_TOKEN = process.env.TRELLO_TOKEN;
 
+var Trello = require("trello");
+var trello = new Trello(TRELLO_KEY, TRELLO_TOKEN);
+
 // Create an authenticated client to access the Twilio REST API
 var client = twilio(TWILIO_ACCOUNT_SID, TWILIO_AUTH_TOKEN);
 
@@ -51,10 +54,7 @@ app.get('/', function(request, response) {
 });
 
 // trello route that will serve up an xml file
-app.get('/trello', function(request, response) {
-  var Trello = require("trello");
-  var trello = new Trello(TRELLO_KEY, TRELLO_TOKEN);
-
+app.get('/trello-voice', function(request, response) {
   trello.getCardsOnList("58752899c1e32993869efd42", function(error, result) {
     console.log(result);
     var header = '<?xml version="1.0" encoding="UTF-8"?><Response>';
@@ -66,6 +66,17 @@ app.get('/trello', function(request, response) {
     response.send(header + lines.join('') + footer);
   });
 });
+
+// trello route that passes received sms to trello
+app.get('/trello-sms', function(request, response) {
+  // retrieve sms
+  // trello.addCard(request.MessageSid, "58752899c1e32993869efd42")
+
+  client.sms.messages(request.MessageSid).get(function(err, sms) {
+    console.log(sms.body);
+  });
+});
+
 
 // handle a POST request to send a text message.  This is sent via ajax on our
 // home page
