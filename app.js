@@ -61,7 +61,7 @@ app.get('/trello-voice', function(request, response) {
     var header = '<?xml version="1.0" encoding="UTF-8"?><Response>';
     var footer = '</Response>';
     var lines = result.map(function(card) {
-      return "<Say voice='woman'>" + card.name.encodeHTML() + "</Say>";
+      return "<Say voice='woman' language='en-GB'>" + card.name.encodeHTML() + "</Say>";
     });
 
     response.send(header + lines.join('') + footer);
