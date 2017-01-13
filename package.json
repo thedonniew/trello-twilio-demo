@@ -21,8 +21,9 @@
     "url": "https://github.com/twilio/starter-node/issues"
   },
   "dependencies": {
+    "ejs": "~0.8.4",
     "express": "~3.3.5",
-    "twilio": "~1.1.4",
-    "ejs": "~0.8.4"
+    "trello": "^0.7.0",
+    "twilio": "~1.1.4"
   }
 }

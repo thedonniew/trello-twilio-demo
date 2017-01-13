@@ -9,6 +9,9 @@ var TWILIO_ACCOUNT_SID = process.env.TWILIO_ACCOUNT_SID,
     TWILIO_AUTH_TOKEN = process.env.TWILIO_AUTH_TOKEN,
     TWILIO_NUMBER = process.env.TWILIO_NUMBER;
 
+var TRELLO_KEY = process.env.TRELLO_KEY,
+    TRELLO_TOKEN = process.env.TRELLO_TOKEN;
+
 // Create an authenticated client to access the Twilio REST API
 var client = twilio(TWILIO_ACCOUNT_SID, TWILIO_AUTH_TOKEN);
 
@@ -34,6 +37,17 @@ app.configure('development', function(){
 // render our home page
 app.get('/', function(request, response) {
     response.render('index');
+});
+
+// trello route that will serve up an xml file
+app.get('/trello', function(request, response) {
+  var Trello = require("trello");
+  var trello = new Trello(TRELLO_KEY, TRELLO_TOKEN);
+
+  trello.getCardsOnList("58752899c1e32993869efd42", function(error, result) {
+    console.log(result);
+    response.send("Okay");
+  });
 });
 
 // handle a POST request to send a text message.  This is sent via ajax on our
@@ -69,8 +83,8 @@ app.get('/hello', function(request, response) {
     // Create a TwiML generator
     var twiml = new twilio.TwimlResponse();
     twiml.say('Hello there! You have successfully configured a web hook.');
-    twiml.say('Have fun with your Twilio development!', { 
-        voice:'woman' 
+    twiml.say('Have fun with your Twilio development!', {
+        voice:'woman'
     });
 
     // Return an XML response to this request
