@@ -46,7 +46,13 @@ app.get('/trello', function(request, response) {
 
   trello.getCardsOnList("58752899c1e32993869efd42", function(error, result) {
     console.log(result);
-    response.send("Okay");
+    var header = '<?xml version="1.0" encoding="UTF-8"?><Response>';
+    var footer = '</Response>';
+    var lines = result.map(function(card) {
+      return "<Say>" + encodeURIComponent(card.name) + "</Say>";
+    });
+
+    response.send(header + lines.join('') + footer);
   });
 });
 
