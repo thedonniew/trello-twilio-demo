@@ -77,9 +77,9 @@ app.post('/trello-sms', function(request, response) {
         }
         else {
             console.log('Added card:', trelloCard);
+            response.send(trelloCard);
         }
     });
-    response.send(trelloCard);
 });
 
 
