@@ -83,7 +83,7 @@ app.post('/trello-sms', function(request, response) {
     pos: 'top'
   };
 
-  Trello.post('/cards/', newCard, creationSuccess);
+  response.send(Trello.post('/cards/', newCard, creationSuccess));
 
   // trello.addCard('Clean car', 'Wax on, wax off', myList,
   //   function (error, trelloCard) {
