@@ -25,6 +25,7 @@ var TRELLO_KEY = process.env.TRELLO_KEY,
 
 var Trello = require("trello");
 var trello = new Trello(TRELLO_KEY, TRELLO_TOKEN);
+var myList = "58752899c1e32993869efd42";
 
 // Create an authenticated client to access the Twilio REST API
 var client = twilio(TWILIO_ACCOUNT_SID, TWILIO_AUTH_TOKEN);
@@ -55,7 +56,7 @@ app.get('/', function(request, response) {
 
 // trello route that will serve up an xml file
 app.get('/trello-voice', function(request, response) {
-  trello.getCardsOnList("58752899c1e32993869efd42", function(error, result) {
+  trello.getCardsOnList(myList, function(error, result) {
     console.log(result);
     var header = '<?xml version="1.0" encoding="UTF-8"?><Response>';
     var footer = '</Response>';
@@ -70,16 +71,30 @@ app.get('/trello-voice', function(request, response) {
 // route that will post to trello list
 app.post('/trello-sms', function(request, response) {
   // add card to trello
-  trello.addCard('Clean car', 'Wax on, wax off', "58752899c1e32993869efd42",
-    function (error, trelloCard) {
-        if (error) {
-            console.log('Could not add card:', error);
-        }
-        else {
-            console.log('Added card:', trelloCard);
-            response.send(trelloCard);
-        }
-    });
+  var creationSuccess = function(data) {
+    console.log('Card created successfully. Data returned:' + JSON.stringify(data));
+  };
+
+  var newCard = {
+    name: 'New Test Card',
+    desc: 'This is the description of our new card.',
+  // Place this card at the top of our list
+    idList: myList,
+    pos: 'top'
+  };
+
+  Trello.post('/cards/', newCard, creationSuccess);
+
+  // trello.addCard('Clean car', 'Wax on, wax off', myList,
+  //   function (error, trelloCard) {
+  //       if (error) {
+  //           console.log('Could not add card:', error);
+  //       }
+  //       else {
+  //           console.log('Added card:', trelloCard);
+  //           response.send(trelloCard);
+  //       }
+  //   });
 });
 
 
