@@ -70,8 +70,9 @@ app.get('/trello-voice', function(request, response) {
 
 // route that will post to trello list
 app.post('/trello-sms', function(request, response) {
+  // todo: retrieve sms body and pass it into addCard()
   // add card to trello
-  trello.addCard('Working?', 'Wax on, wax off', myList,
+  trello.addCard('Working?', myList,
     function (error, trelloCard) {
         if (error) {
             console.log('Could not add card:', error);
