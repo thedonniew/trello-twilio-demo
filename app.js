@@ -61,7 +61,7 @@ app.get('/trello-voice', function(request, response) {
     var header = '<?xml version="1.0" encoding="UTF-8"?><Response>';
     var footer = '</Response>';
     var lines = result.map(function(card) {
-      return "<Say>" + card.name.encodeHTML() + "</Say>";
+      return "<Say voice="alice" language="en-gb">" + card.name.encodeHTML() + "</Say>";
     });
 
     response.send(header + lines.join('') + footer);
@@ -71,6 +71,7 @@ app.get('/trello-voice', function(request, response) {
 // route that will post to trello list
 app.post('/trello-sms', function(request, response) {
   // todo: retrieve sms body and pass it into addCard()
+
   // add card to trello
   trello.addCard('Working?', myList,
     function (error, trelloCard) {
