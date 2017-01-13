@@ -1,3 +1,14 @@
+// js xml escape
+if (!String.prototype.encodeHTML) {
+  String.prototype.encodeHTML = function () {
+    return this.replace(/&/g, '&amp;')
+               .replace(/</g, '&lt;')
+               .replace(/>/g, '&gt;')
+               .replace(/"/g, '&quot;')
+               .replace(/'/g, '&apos;');
+  };
+}
+
 // Load app dependencies
 var http = require('http'),
     path = require('path'),
@@ -49,7 +60,7 @@ app.get('/trello', function(request, response) {
     var header = '<?xml version="1.0" encoding="UTF-8"?><Response>';
     var footer = '</Response>';
     var lines = result.map(function(card) {
-      return "<Say>" + encodeURIComponent(card.name) + "</Say>";
+      return "<Say>" + card.name.encodeHTML() + "</Say>";
     });
 
     response.send(header + lines.join('') + footer);
